@@ -11,7 +11,7 @@
 #include <bsoncxx/builder/stream/document.hpp>
 #include <bsoncxx/json.hpp>
 
-mongocxx::uri uri("mongodb://celine:0522@ds157677.mlab.com:57677/freerider");
+mongocxx::uri uri("mongodb://celine:0522@ds157677.mlab.com:57677/freerid$
 mongocxx::client client(uri);
 
 using bsoncxx::builder::stream::close_array;
@@ -48,8 +48,7 @@ int main(int, char **) {
         Mat frame;
         capture >> frame;
 
-
-       for(int row = 0; row < frame.rows; row++) {
+        for(int row = 0; row < frame.rows; row++) {
             for(int col = 0; col < frame.cols; col++) {
                 if(!is_red(frame, row, col)) {
                     fill_black(frame, row, col);
@@ -68,15 +67,15 @@ int main(int, char **) {
 
         imshow("frame", frame);
 
-        std::cout << red_position_x << ", " << red_position_y << std::endl;
+//        std::cout << red_position_x << ", " << red_position_y << std::en$
 
         create_update(red_position_x, red_position_y);
 
 /*
         // insert variables to db
-        mongocxx::Location::insert_one Location.x = red_position_x.insert_one(d$
-
-
+        mongocxx::Location::insert_one Location.x = red_position_x.inser$
+        mongocxx::Location::insert_one Location.y = red_position_y.inser$
+*/
     }
     return 0;
 
@@ -98,32 +97,14 @@ void fill_black(Mat frame, int row, int col) {
 
 void create_update(int location_x, int location_y) {
 
-/*
-  // Insert a test document
+    bsoncxx::builder::stream::document document{};
 
+    auto collection = client["freerider"]["Location"];
+    document << "x" << location_x
+             << "y" << location_y;
 
-  auto joe = document{} << "user info" << open_document << "user name"
-
-                        << "Joe" << close_document << finalize;
-
-  auto result = Location.insert_one(joe.view());
-
-  std::cout << "Inserted " << result->inserted_id().get_oid().value.to_string()
-
-            << std::endl;
-*/
-    auto builder = bsoncxx::builder::stream::document{};
-    bsoncxx::document::value doc_value = builder
-        << "x" << location_x
-        << "y" << location_y
-    << bsoncxx::builder::stream::finalize;
-
-    bsoncxx::document::view view = doc_value.view();
-    Location.insert_one(view);
-//    mongocxx::result::insert_one result =  Location.insert_one(view);
-//    mongocxx::result::insert_one result = Location.insert_one(location.view()$
+    collection.insert_one(document.view());
+    std::cout << "Inserted : " << location_x << ", " << location_y << std::endl;
 
 }
-
-
 

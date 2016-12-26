@@ -21,10 +21,10 @@ db.on("error",function(err) {
 
 var LocationSchema = new Schema({
     'x': Number,
-    'y': Number
-});
+    'y': Number},
+    { collection : 'Location'});
 
-var Location = mongoose.model('locations', LocationSchema);
+var Location = mongoose.model('Location', LocationSchema);
 
 //console.timeEnd('before insert');
 //console.time('Insert Method');
