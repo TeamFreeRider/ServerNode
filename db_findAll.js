@@ -9,12 +9,10 @@ var Schema = mongoose.Schema;
 
 
 db.once("open",function() {
-
     console.log("db connected");
 });
 
 db.on("error",function(err) {
-
     console.log("db error :",err);
 });
 
@@ -29,9 +27,11 @@ var Location = mongoose.model('Location', LocationSchema);
 //console.timeEnd('before insert');
 //console.time('Insert Method');
 
+
+//I just checked if this db works fine. Ignore this insertion code.
 var location = new Location();
-location.x = 100;
-location.y = 44;
+location.x = 3;
+location.y = 10;
 location.save(function(err){
     if(err) console.log("Something went wrong while saving the thing");
     else console.log("successfully saved");
@@ -40,10 +40,10 @@ location.save(function(err){
 //console.timeEnd('Insert Method');
 //console.time('Find Method');
 
+
 Location.find({}, function(err,docs){
     console.log(docs);
 });
 
 //console.timeEnd('Find Method');
 
-//Location.findOne().sort({x:-1});

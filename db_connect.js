@@ -10,24 +10,16 @@ var locationSchema = mongoose.Schema({
 
 });
 
-var Location = mongoose.model('locations',locationSchema);
-
-Location.findOne().sort({x:-1});
-
-
+var Location = mongoose.model('Location',locationSchema);
 
 var db = mongoose.connection;
 
 db.once("open",function() {
-
     console.log("db connected");
-
 });
-
-
 
 db.on("error",function(err) {
-
     console.log("db error :",err);
-
 });
+
+
