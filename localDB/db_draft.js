@@ -1,13 +1,9 @@
-//console.time('before insert');
+var MongoClient = require('mongodb').MongoClient
+    , assert = require('assert');
 
-var mongoose = require('mongoose');
-mongoose.connect("mongodb://celine:0522@ds157677.mlab.com:57677/freerider");
+var url = 'mongodb://localhost:27071/freerider';
 
-
-var db = mongoose.connection;
-var Schema = mongoose.Schema;
-
-
+/*
 db.once("open",function() {
     console.log("db connected");
 });
@@ -15,7 +11,6 @@ db.once("open",function() {
 db.on("error",function(err) {
     console.log("db error :",err);
 });
-
 
 var LocationSchema = new Schema({
     'x': Number,
@@ -27,7 +22,7 @@ var Location = mongoose.model('Location', LocationSchema);
 //console.timeEnd('before insert');
 //console.time('Insert Method');
 
-/*
+
 //I just checked if this db works fine. Ignore this insertion code.
 var location = new Location();
 location.x = 100;
@@ -37,15 +32,20 @@ location.save(function(err){
     else console.log("successfully saved");
 });
 */
+
+
 //console.timeEnd('Insert Method');
 //console.time('Find Method');
- 
+
 //constantly check out database every 0.5 secs
-setInterval(function(){
-    Location.find({}, function(err,docs){
+MongoClient.connect(url, function(err, db) {
+    var collection = db.collection('Location');
+
+    assert.equal(null, err);
+    console.log("Connected correctly to server");
+    
+    setInterval(function(){
+    collection.find({}, function(err,docs){
     console.log(docs);
-}).sort({_id:-1}).limit(1)}, 500);
-
-
-
-//console.timeEnd('Find Method');
+    }).sort({_id:-1}).limit(1)}, 500);
+});

@@ -84,6 +84,7 @@ int main(int, char **) {
 
 int is_red(Mat frame, int row, int col) {
     return
+//approach to BGR values
             frame.at<Vec3b>(row, col)[0] < other_threshold &&
             frame.at<Vec3b>(row, col)[1] < other_threshold &&
             frame.at<Vec3b>(row, col)[2] > red_threshold;
@@ -99,6 +100,8 @@ void create_update(int location_x, int location_y) {
 
     bsoncxx::builder::stream::document document{};
 
+
+//insert x,y values to the location table
     auto collection = client["freerider"]["Location"];
     document << "x" << location_x
              << "y" << location_y;
