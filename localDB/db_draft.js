@@ -1,7 +1,9 @@
-var MongoClient = require('mongodb').MongoClient
+var MongoClinet = require('mongodb').MongoClient
     , assert = require('assert');
 
-var url = 'mongodb://localhost:27071/freerider';
+var url = 'mongodb://localhost:27017/db';
+
+
 
 /*
 db.once("open",function() {
@@ -34,18 +36,27 @@ location.save(function(err){
 */
 
 
+
 //console.timeEnd('Insert Method');
 //console.time('Find Method');
 
+//db.on('error', console.error.bind(console, 'connection error:'));
+//db.once('open', function(){ console.log("we're connected"); });
+
+
 //constantly check out database every 0.5 secs
 MongoClient.connect(url, function(err, db) {
-    var collection = db.collection('Location');
+    assert.equal(null,err);
+    db.createCollection('Blue_point', function(err, collection) {});
 
-    assert.equal(null, err);
-    console.log("Connected correctly to server");
+    var collection = db.collection('Blue_point');
     
-    setInterval(function(){
-    collection.find({}, function(err,docs){
-    console.log(docs);
-    }).sort({_id:-1}).limit(1)}, 500);
+    var findDocuments = function(db, callback) {
+	var collection = db.collection('Blue_point');
+        setInterval(function(){
+	    collection.find({}, function(err,docs){
+    	        console.log(docs);
+            }).sort({_id:-1}).limit(1)}, 500);
+    }
+    db.close();
 });
